@@ -1,5 +1,6 @@
 import json
 from google.cloud import bigquery
+from google.cloud import bigquery_storage
 
 
 def get_all_orders_from_bigquery():
@@ -10,11 +11,13 @@ def get_all_orders_from_bigquery():
     # Instantiate a BigQuery client
     client = bigquery.Client()
 
+    bqstorage_client = bigquery_storage.BigQueryReadClient()
+
     # Define the SQL query
     query = 'SELECT order_id, user_id FROM `bigquery-public-data.thelook_ecommerce.orders`'
 
     # Run the query and convert the results to za DataFrame
-    orders_df = client.query(query).to_dataframe()
+    orders_df = client.query(query).to_dataframe(bqstorage_client=bqstorage_client)
 
     return orders_df
 
@@ -28,11 +31,13 @@ def get_user_details_from_bigquery(user_id: int):
     # Instantiate a BigQuery client
     client = bigquery.Client()
 
+    bqstorage_client = bigquery_storage.BigQueryReadClient()
+
     # Define the SQL query
     query = f'SELECT first_name, last_name FROM `bigquery-public-data.thelook_ecommerce.users` WHERE id = {user_id}'
 
     # Run the query and convert the results to DataFrame
-    user_details = client.query(query).to_dataframe()
+    user_details = client.query(query).to_dataframe(bqstorage_client=bqstorage_client)
 
     # Add user id in user details
     user_details['id'] = user_id
@@ -50,11 +55,13 @@ def get_product_ids_from_bigquery(order_id: int):
     # Instantiate a BigQuery client
     client = bigquery.Client()
 
+    bqstorage_client = bigquery_storage.BigQueryReadClient()
+
     # Define the SQL query
     query = f'SELECT product_id FROM `bigquery-public-data.thelook_ecommerce.order_items` WHERE order_id = {order_id}'
 
     # Run the query and convert the results to DataFrame
-    product_ids = client.query(query).to_dataframe()
+    product_ids = client.query(query).to_dataframe(bqstorage_client=bqstorage_client)
 
     # Extracting the list of product_ids and return
     return product_ids['product_id'].tolist()
@@ -69,11 +76,13 @@ def get_product_details_from_bigquery(product_id: int):
     # Instantiate a BigQuery client
     client = bigquery.Client()
 
+    bqstorage_client = bigquery_storage.BigQueryReadClient()
+
     # Define the SQL query
     query = f'SELECT name, category FROM `bigquery-public-data.thelook_ecommerce.products` WHERE id = {product_id}'
 
     # Run the query and convert the results to DataFrame
-    product_details = client.query(query).to_dataframe()
+    product_details = client.query(query).to_dataframe(bqstorage_client=bqstorage_client)
 
     # Add product id in user details
     product_details['id'] = product_id

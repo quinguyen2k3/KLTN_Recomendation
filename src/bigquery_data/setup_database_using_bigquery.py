@@ -10,7 +10,7 @@ class DBSetupUsingBigquery:
 
     def import_data_and_enter_into_database(self):
         # Replace 'your-gcp-project-id' with your actual Google Cloud project ID
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"D:\Project KLTN\Neo4j-Product-Recommendation-System\src\recommendation-459910-aca8bfb37f43.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"D:\Project KLTN\recommendation-459910-7a16944492c3.json"
 
         for _, row in get_all_orders_from_bigquery().iterrows():
             order_id = row['order_id']
